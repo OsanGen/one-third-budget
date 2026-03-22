@@ -1,12 +1,12 @@
 # FULL_TECH_BUILD
 
 ## Snapshot header
-- UpdatedAt: 2026-03-22T21:31:20Z
+- UpdatedAt: 2026-03-22T21:56:30Z
 - RepoName: Finance
 - Branch: main
-- HEAD commit hash: 17079aa
-- Dirty state: no
-- Diff summary: Initialized local git repo, connected origin, committed current app state, and pushed to GitHub. Added temporary public preview tunnel for live share testing.
+- HEAD commit hash: 1f47296
+- Dirty state: yes
+- Diff summary: Added GitHub Pages static export config and workflow, enabled workflow-based Pages for the repo, verified live site at `https://osangen.github.io/one-third-budget/`, then refreshed the technical snapshot.
 - Primary languages + package managers detected: TypeScript, CSS, HTML; npm (`package.json`, `package-lock.json`)
 
 ## What this repo is
@@ -66,12 +66,16 @@ One Third Budget is a single-screen, mobile-first budgeting coach built with Nex
   - Export and clear behavior for saved months with confirmation copy.
   - Trim guidance in over-cap state using largest bucket suggestions.
   - Accessibility and usability patterns implemented for labels, focus, and major announcements.
+  - GitHub Pages deployment from `main` using `.github/workflows/deploy-pages.yml`.
+  - Live GitHub-hosted app URL: `https://osangen.github.io/one-third-budget/`.
 - What is in progress:
-  - Optional hosted deployment setup with Vercel (token needed for CLI login) and custom domain.
+  - No active implementation work.
 - What is not started:
   - Advanced saved-month management (edit/delete/history filters).
 
 ## Recent change log
+- 2026-03-22T21:56:30Z | Enabled GitHub Pages workflow deployment, verified the live site, and refreshed snapshot metadata | FULL_TECH_BUILD
+- 2026-03-22T21:53:25Z | Added static export config and GitHub Actions Pages workflow, updated docs/specs, and pushed to `main` | next.config.mjs, .github/workflows/deploy-pages.yml, README.md, final_build/BUILD_MAP.txt, final_build/CURRENT_GAPS.txt, final_build/COMPONENT__Deployment.txt
 - 2026-03-22T21:31:20Z | Started local dev server and generated a temporary public tunnel for live testing and sharing | local run command, localtunnel URL `https://dirty-guests-shop.loca.lt`
 - 2026-03-22T21:23:31Z | Initialized git repo, committed local state, created GitHub repo `one-third-budget`, and pushed to `origin/main` | .git, FULL_TECH_BUILD
 - 2026-03-22T21:16:04Z | Verified workspace metadata for GitHub hosting and confirmed no local git metadata (before repo initialization) | FULL_TECH_BUILD
