@@ -1,0 +1,90 @@
+# FULL_TECH_BUILD
+
+## Snapshot header
+- UpdatedAt: 2026-03-22T21:16:04Z
+- RepoName: Finance
+- Branch: unavailable (no git repository detected)
+- HEAD commit hash: unavailable
+- Dirty state: yes
+- Diff summary: Checked for Git remotes; no .git exists under `/Volumes/data/🕹️CodexDev/LifeStyle/Finance` and parent scope.
+- Primary languages + package managers detected: TypeScript, CSS, HTML; npm (`package.json`, `package-lock.json`)
+
+## What this repo is
+One Third Budget is a single-screen, mobile-first budgeting coach built with Next.js App Router. It helps users keep low-stress control over optional spending with calm plain-language prompts and local-only persistence.
+
+## System map
+- Layout and primitives: `app/layout.tsx`, `app/globals.css`, and `components/ui/*`.
+- Page shell and feature orchestration: `app/page.tsx`.
+- Money parsing/math core: `lib/types.ts`, `lib/money.ts`, `lib/money.test.ts`.
+- Draft persistence: `lib/storage.ts`.
+- Saved month persistence: `lib/monthLogs.ts`.
+- Bucket behavior: `components/buckets/BucketCard.tsx`.
+- Summary and chart visuals: `components/SummaryDonut.tsx`.
+- Coach and flow: `components/NextMoveCoach.tsx`.
+- Living build map and component contracts: `final_build/BUILD_MAP.txt` plus component specs in `final_build/`.
+
+## Entrypoints and run commands
+- How to run locally: `npm install` then `npm run dev`, open `http://localhost:3000`.
+- How to build: `npm run build`.
+- How to test: `npm test` (money utility tests are in `lib/money.test.ts`).
+- How to lint/format/typecheck: `npm run lint` (Next.js type checks run during build).
+- Environment notes: no backend, no env vars, localStorage only.
+
+## Dependencies and toolchain summary
+- Package manager: npm
+- Manifest and lockfiles:
+  - `package.json`
+  - `package-lock.json`
+- Direct and core dependencies:
+  - `next: 14.2.5`
+  - `react: 18.3.1`
+  - `react-dom: 18.3.1`
+- Dev dependencies:
+  - `typescript: ^5.5.4`
+  - `tailwindcss: ^3.4.14`
+  - `eslint: ^8.57.1`
+  - `vitest: ^3.2.4`
+  - `autoprefixer: ^10.4.20`
+  - `postcss: ^8.4.49`
+- Command to print dependency tree: `npm ls`
+- Known risky areas:
+  - Keep localStorage schema migration-safe and defensive.
+  - Browser availability for `localStorage` and `crypto.randomUUID` has fallback paths in core reducers.
+
+## Current implementation status
+- What is implemented:
+  - Single-screen route with ordered section anchors (`header`, `next-move`, `money-in`, `bucket-cap`, `buckets`, `summary`, `saved-months`).
+  - Responsive shell keeps one-column mobile flow while desktop can place money and cap side by side.
+  - OSAN-first token system and reusable UI primitives.
+  - Core money parsing and threshold logic in `lib/money.ts`.
+  - Money in input with live cap calculation.
+  - Bucket actions (add/quick add/rename/amount/remove), stable IDs, and derived totals.
+  - Summary panel with status messaging, progress bar, donut chart, and legend interaction.
+  - Next-move coaching strip with section navigation and live focus highlighting.
+  - Draft persistence with key `one-third-budget:draft:v1`.
+  - Saved months persistence with key `one-third-budget:logs:v1`, `Save this month` flow, restore on refresh, and calm history cards.
+  - Export and clear behavior for saved months with confirmation copy.
+  - Trim guidance in over-cap state using largest bucket suggestions.
+  - Accessibility and usability patterns implemented for labels, focus, and major announcements.
+- What is in progress:
+  - GitHub hosting/remote-link discovery and live-share validation from this workspace.
+- What is not started:
+  - Advanced saved-month management (edit/delete/history filters).
+
+## Recent change log
+- 2026-03-22T21:16:04Z | Verified workspace metadata for GitHub hosting: no local git repository or remotes found in expected project path | FULL_TECH_BUILD
+- 2026-03-22T20:45:10Z | Final ship pass: expanded README, added SHIP_CHECKLIST.md, and documented handoff state and gaps | README.md, SHIP_CHECKLIST.md, final_build/CURRENT_GAPS.txt, final_build/COMPONENT__AppShell.txt
+- 2026-03-22T20:40:16Z | QA reliability pass: fixed HelperText `id` compile error, added persistence unit tests, and confirmed lint/tests/build are passing | components/ui/HelperText.tsx, lib/storage.test.ts, lib/monthLogs.test.ts, final_build/CURRENT_GAPS.txt, final_build/COMPONENT__UiPrimitives.txt
+- 2026-03-22T20:38:59Z | Visual polish pass on rhythm, dividers, section accents, bucket badge, and coach highlight motion | app/globals.css, app/page.tsx, components/ui/Button.tsx, components/ui/SectionHeader.tsx, components/ui/StatusPill.tsx
+
+## Refresh procedure
+- If this snapshot is stale, rerun from repo root:
+  - `date`
+  - `git rev-parse --is-inside-work-tree`
+  - `git remote -v`
+  - `git branch --show-current`
+  - `git status --short`
+  - `npm ls`
+  - `npm run lint`
+  - `npm run build`
+- Note: this command path is not currently a git repo, so run from the real repo root where `.git` exists before collecting git-derived metadata.

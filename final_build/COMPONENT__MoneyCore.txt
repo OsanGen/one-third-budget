@@ -1,0 +1,45 @@
+# COMPONENT__MoneyCore
+
+## Purpose
+Provide pure, deterministic helpers for every budget math decision before any UI wiring exists:
+- cap from monthly revenue
+- bucket totals from text inputs
+- remaining budget
+- usage percentage
+- traffic-light-style status
+- trim suggestions when spending is over budget
+
+## Inputs
+- `monthlyRevenue` number input for cap logic.
+- `BucketDraft[]` array with `amountText` strings and stable IDs.
+- `BucketDraft[]` values can be blank; they are treated as zero for math.
+
+## Outputs
+- Formatted currency strings for display.
+- Numeric totals and percentages for computed state.
+- Status enum: `safe`, `close`, `over`.
+- Suggestion list keyed by `bucketId` and `reduceBy` amount for reducing spend.
+- Suggestions are ranked by largest bucket amounts first and capped to at most 3 buckets.
+
+## State
+- Stateless. No caching and no side effects.
+- Uses helper math only; no mutation.
+
+## Edge cases
+- Blank, invalid, or negative money text is treated as `0`.
+- Negative revenue, cap, or non-finite numbers resolve to safe zeroed values.
+- Usage and status avoid divide-by-zero by returning `0` and `safe` semantics.
+- Trim suggestions run only when spend is above cap and only for positive buckets.
+- Trim suggestions stop after up to three buckets and reduce each by enough to close the gap, never below zero.
+
+## Dependencies
+- `lib/types.ts` for shared shape contracts (`BucketDraft`, `BudgetStatus`, `TrimSuggestion`).
+- `lib/money.ts` exports all helpers directly and keeps all logic in one module.
+
+## Acceptance checks
+- All helpers are pure and independent of UI.
+- Every helper has a unit test with explicit edge cases.
+- Status cutoffs exactly match requirements:
+  - under 85% = `safe`
+  - 85% to 100% = `close`
+  - above 100% = `over`

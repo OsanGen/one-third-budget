@@ -1,0 +1,25 @@
+- Scaffolding completed and stable | done | App shell runs with OSAN-inspired primitives and ordered single-screen sections.
+- Theme tokens finalized for this turn | done | Added centralized semantic color variables, typography tokens, and 8px spacing system.
+- UI primitives reusable layer | done | Added `components/ui/*` primitives and switched page shell to use them.
+- Core budget state/model layer | done | Added `lib/types.ts`, `lib/money.ts`, and `lib/money.test.ts` for pure budget math.
+- Header strip content and copy | done | Added `components/HeaderStrip.tsx` and wired it to the `header` card for immediate comprehension.
+- Money in + bucket cap live state | done | Added `app/page.tsx` state + inputs so revenue updates `Your bucket cap` instantly.
+- Summary section now live | done | Added live derived summary state with clear safe, at cap, and over cap messaging.
+- Summary progress bar now live | done | Added live cap-usage bar with percentage and non-color overage explanation.
+- Summary donut chart | done | Added calm donut chart in Summary with restrained accent tones and empty-state guidance when no buckets exist.
+- Summary chart legend and highlight interaction | done | Added legend rows with amount + percent and click/keyboard highlight mapping to bucket cards and chart segments.
+- Next move coach guidance | done | Wired the three-step strip to live money and bucket state with section scroll + highlight.
+- LocalStorage strategy implementation | done | Added `lib/storage.ts` with versioned key, restore, save, and clear logic plus page auto-save + hydrate flow.
+- Saved months persistence and history | done | Added `one-third-budget:logs:v1` flow in `lib/monthLogs.ts` and `app/page.tsx` for save, restore, and calm review cards.
+- Saved months export and clear actions | done | Added export JSON and confirmed clear-all behavior in `app/page.tsx`; both remain secondary actions to save.
+- Money-core behavior guardrails | done | Added status, cap, percent, and trim suggestions coverage in unit tests.
+- Optional bucket input wiring | done | Added editable bucket reducer actions in `app/page.tsx` with stable IDs and blank-safe amount text.
+- Quick-add and faster bucket creation | done | Added quick-add chips, blank add focus behavior, and duplicate-safe label handling in `app/page.tsx`.
+- Bucket card component | done | Added `components/buckets/BucketCard.tsx` with badge, amount context, and focused edit flow.
+- Bucket section completion | done | Added empty guidance, first-five default card display, and show-all toggle in `app/page.tsx`.
+- Accessibility and mobile checks in behavior | in progress | Added visible labels for all inputs, focused keyboard targets, live status/notification announcements, and removed noisy aria-live from decorative progress track. Remaining: validate with real screen-reader device in a follow-up pass.
+- Ship handoff pass completed | done | Added `README.md` and `SHIP_CHECKLIST.md` with run steps, rules, limitations, and v2 backlog.
+- Over-cap trim guidance | done | `getTrimSuggestions` now returns top largest buckets for fast, specific over-cap adjustment, surfaced in Summary.
+- Responsive layout pass | done | Moved Next move near top, kept one-column mobile, set desktop side-by-side money-in and cap, and added stable spacing to avoid horizontal scroll.
+- Visual polish pass | done | Refined OSAN rhythm, section headers, state accents, coach target highlight motion, and bucket icon and button polish.
+- QA reliability pass | done | Fixed HelperText typing regression, added draft and saved-month persistence tests, and verified lint + test + build checks all pass.

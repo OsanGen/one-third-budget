@@ -1,0 +1,74 @@
+# COMPONENT__Buckets
+
+## Purpose
+Manage the optional spending buckets in a single-screen flow, while keeping raw values editable and math-safe.
+
+## Inputs
+- `bucketState`: list of `BucketDraft` items managed by page-level reducer.
+- User interactions: quick-add chip, blank add, edit name, edit amount text, remove, show-all toggle.
+- Quick-add chips are exposed as an accessible control group with visible button labels.
+
+## Outputs
+- Updated `bucketState` with stable `id` values.
+- Derived bucket total from `getBucketTotal(bucketState.buckets)`.
+- UI behavior that stays calm at low counts and manageable at high counts.
+
+## State
+- Source of truth for bucket UI fields is reducer-managed object:
+  - `BucketState = { buckets: BucketDraft[] }`
+- `showAllBuckets` UI state in `app/page.tsx` tracks when the user wants full list visibility.
+- Each `BucketDraft` item is:
+  - `id`: stable internal key
+  - `label`: editable bucket name
+  - `amountText`: text string typed by user, initially blank
+- Reducer actions:
+  - `bucket/add` inserts one provided `BucketDraft` payload.
+  - `bucket/update-label` stores typed name.
+  - `bucket/update-amount` stores typed amount text.
+  - `bucket/remove` deletes a bucket by id.
+- Duplicate handling:
+  - Quick-add labels are de-duplicated with a simple suffix pattern.
+  - If `DoorDash` already exists, next quick add becomes `DoorDash (2)` and increments safely.
+
+## UI behavior
+- Section title and helper line are fixed:
+  - title: `Buckets`
+  - helper: `Each bucket is a place your optional money can go.`
+- Each visible input is wrapped in an explicit label (`Bucket name` / `Amount`) so screen readers announce purpose.
+- Empty state card for no buckets:
+  - title `No buckets yet`
+  - body `Start with one place your money tends to go.`
+  - actions: `Add bucket`, plus one or two quick-add chips.
+- Non-empty state:
+  - cards are full-width and built from `components/buckets/BucketCard.tsx`.
+  - each card includes badge, name input, amount input with `$`, and optional percent label.
+  - remove is text button.
+- Large list behavior:
+  - first 5 cards shown by default when count grows.
+  - show all toggle appears only when there are more than five.
+- Focus behavior:
+  - quick-add focuses amount field after insert.
+  - blank add focuses name field after insert.
+- Remove behavior:
+  - confirm only when card has meaningful content.
+  - skip confirmation when name and amount are both empty.
+
+## Edge cases
+- Amount remains blank in UI while empty to avoid fake zero.
+- Blank `amountText` contributes `0` only through `getBucketTotal` parsing.
+- Removing buckets keeps math robust with an empty list.
+- `id` generation uses `crypto.randomUUID()` when available, with fallback for environments without it.
+- Non-numeric input is sanitized in `updateBucketAmount`.
+
+## Dependencies
+- `lib/types.ts` for `BucketDraft`.
+- `lib/money.ts` for `getBucketTotal`, `getUsagePercent`, `parseMoneyInput`, `formatCurrency`.
+- Page-level reducer and UI state in `app/page.tsx` and bucket card component in `components/buckets/BucketCard.tsx`.
+
+## Acceptance checks
+- Empty state card appears with clear copy and helpful actions when no buckets exist.
+- Quick-add and add bucket actions create rows in the list.
+- List shows first five buckets by default and reveals all on `Show all`.
+- `Show fewer` returns to compact mode.
+- Remove action deletes selected bucket only when confirmed for meaningful rows.
+- Bucket total updates from entered values only.

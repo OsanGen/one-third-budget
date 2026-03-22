@@ -1,0 +1,60 @@
+# COMPONENT__NextMoveCoach
+
+## Purpose
+Guide attention to one clear next action and show progress through the three-step flow.
+
+## Inputs
+- Parsed monthly revenue from page state.
+- Derived bucket total and cap usage from `lib/money.ts`.
+- Live `coachSaved` flag set by the user's save action and cleared on any edit.
+
+## Outputs
+- One visible state card in every session (never blank).
+- 3-step strip with labels: Money in, Buckets, Save month.
+- State title and short body that matches the current math state.
+- One primary action button for the current best next step.
+- Action button uses explicit type/label for screen-reader clarity.
+- Target section id for smooth scroll.
+
+## Coach states
+- A (`no-revenue`):
+  - Title: Add your money in
+  - Body: Tell us your monthly money first, then we can guide the rest.
+  - Action target: `money-in`
+- B (`revenue-no-amount`):
+  - Title: Add one bucket amount
+  - Body: Start with one bucket and type a number.
+  - Action target: `buckets`
+- C (`under-cap`):
+  - Title: You are in a calm spot
+  - Body: You still have room. Save this setup when you are done.
+  - Status: safe and below 85%
+  - Action target: `saved-months`
+- D (`close-to-cap`):
+  - Status: 85% to 100%
+  - Title: You are close to your cap
+  - Body: You are almost there. Save this setup when you are ready.
+  - Action target: `saved-months`
+- E (`over-cap`):
+  - Status: above 100%
+  - Title: You are over your cap
+  - Body: Small trims are easiest. Pull one amount down a little.
+  - Action target: `buckets`
+- F (`snapshot-saved`):
+  - Title: Month snapshot saved
+  - Body: You can review this check in saved months or start again with new numbers.
+  - Action label: Start a new month
+  - Action target: `money-in` to start a new session
+
+## Behavior
+- The component receives a resolved `nextMoveModel` from `app/page.tsx` and rerenders live as inputs change.
+- Coach button calls `onAction(target)`.
+- `onAction` in page scrolls smoothly to the target section and adds a temporary highlight class.
+- Target section highlight is subtle via `section-highlight` border effect.
+- The save action in this turn sets `coachSaved` for local state only; it is cleared on any bucket or money edit.
+
+## Acceptance
+- Coach is always visible and never blank.
+- Exactly one main action is shown per state.
+- Clicking action scrolls directly to a defined section and highlights it.
+- States update as user edits money and bucket amounts.

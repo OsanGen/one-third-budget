@@ -1,0 +1,64 @@
+# COMPONENT__AppShell
+
+## Purpose
+Provide the single-screen presentation scaffold with calm OSAN primitives and ordered sections.
+
+## Inputs
+- Live user input in the Money in card: monthly money text.
+- Header copy from `components/HeaderStrip.tsx`.
+- Live status tone derived from cap math used to drive shell accent for this screen.
+- Keyboard and screen-reader ordering requirements for calm one-screen flow.
+- Restored draft from localStorage when available:
+  - `monthlyRevenueText`
+  - `buckets`
+- Restored saved months from localStorage when available:
+  - `logs` from `one-third-budget:logs:v1`.
+
+## Outputs
+- Ordered sections in DOM and reading order:
+  - `header`
+  - `next-move`
+  - `money-in`
+  - `bucket-cap`
+  - `buckets`
+  - `summary`
+  - `saved-months`
+- Live numeric cap computed from `money in`.
+- Responsive behavior:
+  - phone: one column with coach near the top and full-width cards
+  - desktop: `money in` and `bucket cap` can display side by side to reduce extra vertical jump
+  - saved months remain a calm full-width section at the bottom
+
+## State
+- `app/page.tsx` owns local form state for monthly revenue.
+- Budget math derives from pure helpers (`getCap`) without side effects.
+- Draft persistence is handled through `lib/storage.ts`:
+  - restore on mount after hydration
+  - auto-save on meaningful changes
+  - clear on empty draft
+  - versioned key `one-third-budget:draft:v1`
+- Saved-month persistence is handled through `lib/monthLogs.ts`:
+  - restore on mount after hydration
+  - explicit save action writes snapshots
+  - separate key `one-third-budget:logs:v1`
+  - each snapshot includes label date fallback and key financial fields
+
+## Dependencies
+- `components/ui/*` reusable primitives for sections, cards, actions, and copy.
+- `components/HeaderStrip.tsx` for top-of-page explanation and reassurance.
+- `lib/money.ts` for live cap calculation.
+- `lib/storage.ts` for versioned localStorage draft load/save/clear.
+- `lib/monthLogs.ts` for versioned saved-months load/save.
+- `app/globals.css` and `tailwind.config.ts` for visual tokens.
+
+## Acceptance checks
+- `/` renders as one page with no layout errors.
+- Sections appear in predictable top to bottom order.
+- `money-in` and `bucket-cap` use a responsive two-column layout on larger screens while every section remains full width on phone.
+- Inputs and action controls are keyboard reachable in DOM order.
+- OSAN visual system is visible: white field, INK text/outlines, FOG panels, calm spacing.
+- Section headers remain structured with subtle dividers and a small scene accent line.
+- No em dashes appear in visible copy.
+- Header explains app purpose clearly in one pass.
+- Money-in value updates bucket cap immediately after typing.
+- App provides the MVP product rules end-to-end: one-screen flow, live summary, live chart, coach guidance, and local persistence.

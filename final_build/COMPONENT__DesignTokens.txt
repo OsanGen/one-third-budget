@@ -1,0 +1,22 @@
+# COMPONENT__DesignTokens
+
+## Purpose
+Define and document the visual system variables and typography used across the app.
+
+## Token set
+- `--white`: white base surface
+- `--fog`: grouped panel fill
+- `--ink`: text and borders
+- `--cog-blue`, `--cog-mint`, `--cog-yellow`, `--cog-pink`: accent options
+- `--space-unit`: 8px baseline spacing grid
+- `--radius-card`: 1.5rem
+- `--shadow-soft`: subtle emphasis only
+- `--focus`: strong focus ring color
+
+## Note
+Temporary token values are placeholders.
+Final hex values must be replaced with canonical CogSec logo-derived values before production launch.
+
+## Acceptance checks
+- Visual references use token variables instead of local hard-coded colors where possible.
+- 8px spacing is applied to major layout and list rhythm.

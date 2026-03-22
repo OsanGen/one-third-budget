@@ -1,0 +1,71 @@
+# COMPONENT__SavedMonths
+
+## Purpose
+Persist and display monthly snapshot history so users can review what worked without external accounts.
+
+## Inputs
+- Live state in `app/page.tsx`:
+  - `monthlyRevenue`
+  - `bucketCap`
+  - `bucketTotal`
+  - `remainingBudget`
+  - `bucketStatus`
+  - `bucketState.buckets`
+- User actions:
+  - `Save this month` button click.
+  - `Export JSON` button click.
+  - `Clear all saved months` button click with confirmation.
+- Restored history loaded from `one-third-budget:logs:v1`.
+
+## Outputs
+- `savedMonths` array in page state containing:
+  - `id`
+  - `savedAt`
+  - `label`
+  - `revenue`
+  - `cap`
+  - `bucketTotal`
+  - `remaining`
+  - `status`
+  - `buckets`
+- Persisted payload written through `lib/monthLogs.ts` after each save.
+- Export payload includes all persisted logs and export metadata (`version`, `exportedAt`) and is downloaded as a browser file.
+- UI rendering:
+  - Empty state card when history is empty.
+  - Calm card list when history exists.
+  - Secondary actions under section primary action:
+    - `Export JSON` downloads all saved logs.
+    - `Clear saved months` erases logs after explicit confirmation.
+
+## State
+- `savedMonths: SavedMonthLog[]` stored in `app/page.tsx`.
+- Derived row content:
+  - title uses `entry.label` when present, otherwise `makeSavedMonthLogLabel(savedAt)`.
+  - rows show money in, bucket cap, total in buckets, remaining or over text, and bucket count.
+- Actions:
+  - `handleSaveMonth` serializes live draft state into `createSavedMonthLog(...)` and prepends to history.
+- `loadSavedMonths()` runs on mount in a `useEffect` to restore on refresh.
+- `clearSavedMonths()` is called only after confirm copy:
+  - `Clear all saved months? This cannot be undone.`
+
+## Dependencies
+- `lib/monthLogs.ts`:
+  - `createSavedMonthLog`
+  - `loadSavedMonths`
+  - `saveSavedMonths`
+  - `makeSavedMonthLogLabel`
+- `components/ui/StatusPill` and existing helper text/card primitives for calm scanability.
+
+## Edge cases
+- Saving with no buckets is allowed only when there is revenue.
+- Label is optional in the persisted shape and can still be rendered through date fallback.
+- Saved history is separate from draft state and does not affect in-progress draft editing.
+
+## Acceptance checks
+- Primary section action is visible: `Save this month`.
+- `Export JSON` downloads current saved months from the browser.
+- `Clear saved months` requires explicit user confirmation.
+- Empty history is obvious and non-alarming.
+- Saved items render `label or save date`, revenue, cap, total, remaining/over, and bucket count.
+- Refresh restores saved months from localStorage.
+- Snapshot data does not overwrite current draft state.

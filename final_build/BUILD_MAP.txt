@@ -1,0 +1,56 @@
+One Third Budget v1 (Single Screen) system map
+
+- Layout system (`app/globals.css`, `tailwind.config.ts`, `app/layout.tsx`)
+  - Centralized semantic tokens and 8px spacing rules
+  - White-dominant field, INK text and outlines, FOG panel grouping
+  - Temporary token values with explicit TODO for final CogSec logo hexes
+
+- Presentational primitives (`components/ui/*`)
+  - `Card`: reusable panel wrapper with shared style and section support
+  - `SectionHeader`: heading + optional subtitle with heading scale
+  - `Button`: large, tappable actions with strong focus and minimal variants
+  - `StatusPill`: simple plain-language state chip with tone tokens
+  - `TextField`: form field wrapper with label/helper structure
+  - `HelperText`: low-noise helper copy style
+  - `EmptyStateCard`: placeholder-safe no-value state
+
+- Screen shell (`app/page.tsx`)
+  - One route `/` only
+  - Uses primitives for all visible blocks
+  - Preserves section anchors for header, next move, money in, buckets, summary, saved months
+  - Houses a local bucket reducer that drives row-level add / rename / amount / remove actions and publishes bucket drafts for derived totals.
+  - Loads and saves draft state through `lib/storage.ts` using `one-third-budget:draft:v1`.
+  - Loads and saves saved month snapshots separately through `lib/monthLogs.ts` using `one-third-budget:logs:v1`.
+
+- Summary section (`app/page.tsx`)
+  - Shows live status for bucket cap adherence with clear labels:
+    - Safe
+    - Close to cap
+    - Over cap
+  - When over cap, shows the largest current bucket names as a calm fast-trim suggestion.
+  - Displays primary status line, visible remaining/overage number, and supporting lines for total in buckets, bucket cap, and usage.
+  - Adds a calm rounded progress bar for live cap usage with explicit percent and overage text when over.
+  - Keeps empty states actionable by asking for monthly money input when cap is still missing.
+
+- Saved months section (`app/page.tsx`, `lib/monthLogs.ts`, `final_build/COMPONENT__SavedMonths.txt`)
+  - Adds a primary `Save this month` action and a calm saved-history list.
+  - Stores each snapshot with versioned localStorage key `one-third-budget:logs:v1`.
+  - Renders each saved month with date-based label fallback, money in, cap, bucket total, remaining or over status, and bucket count.
+  - Restores snapshot history after refresh so saved months stay visible between sessions.
+
+- Future behavior layer
+  - Add explicit history management actions (edit/delete) while keeping saved history calm and simple.
+- Bucket behavior (`app/page.tsx`, `lib/types.ts`, `lib/money.ts`, `final_build/COMPONENT__Buckets.txt`)
+  - `BucketState` reducer keeps raw draft strings in memory for each bucket row.
+  - Stable ids are generated on add for persistence-ready storage.
+  - `amountText` remains empty until typed to reduce cognitive load.
+  - Derived totals are computed by `getBucketTotal` instead of direct input string arithmetic.
+  - Quick-add chips create predefined buckets fast, with duplicate-safe name suffixing and focus moving to the amount field.
+  - Blank add keeps entry fast by focusing the new bucket name field first.
+  - Bucket cards are rendered with `components/buckets/BucketCard.tsx` and include badge, amount input, and optional cap percent label.
+  - Bucket section now shows an empty guidance card when none exist and keeps long lists calm by showing five cards with optional `Show all` expansion.
+
+- Core math foundation (`lib/types.ts`, `lib/money.ts`)
+  - Pure, side-effect free helpers compute cap, total, usage, status, and trim suggestions.
+  - Input layer remains plain text for all money fields; negatives are blocked to 0.
+  - Future hook (`hooks/useBudgetCoach.ts`) will combine these helpers with UI draft state and localStorage snapshot state.

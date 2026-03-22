@@ -1,0 +1,29 @@
+# COMPONENT__UiPrimitives
+
+## Purpose
+Centralize reusable primitives to keep the app calm, consistent, and easy to extend.
+
+## Components
+- `Card`:
+  - Reusable panel wrapper.
+  - Inherits section-level props for anchors/ARIA attributes.
+- `SectionHeader`:
+  - Shared heading/subtitle pattern.
+- `Button`:
+  - Large target, minimal visual variants.
+  - Strong focus outline and clear primary/subtle tone.
+  - Keyboard-focused ring style with explicit type defaults.
+- `StatusPill`:
+  - Plain-language status indicator with single-state tone support.
+- `TextField`:
+  - Label + input + helper composition.
+- `HelperText`:
+  - Small supportive explanatory text.
+  - Optional `id` prop supports explicit `aria-live` and form messaging wiring where needed.
+- `EmptyStateCard`:
+  - Friendly placeholder block for unloaded or empty state.
+
+## Acceptance checks
+- Components are imported through `components/ui/*` and used by `app/page.tsx`.
+- Styles remain non-saturated, non-noisy, and OSAN-aligned.
+- No finance jargon in static copy and no em dashes.

@@ -1,0 +1,27 @@
+# COMPONENT__MoneyInAndCap
+
+## Purpose
+Drive the first-step input flow: let users set monthly money in and immediately see the one-third spending cap.
+
+## Inputs
+- Monthly money text input string.
+
+## Outputs
+- A clean, large monthly input field with visible `$` prefix.
+- `Your bucket cap` value, updated on each keystroke after parsing.
+
+## State
+- Local form text state lives in `app/page.tsx`.
+- Parsed number is derived with `parseMoneyInput`.
+- Cap is derived with `getCap`.
+
+## Edge cases
+- Blank input stays allowed and parses to `0`.
+- Invalid or negative characters are filtered from the input.
+- On blur, input is formatted for clarity.
+- On focus, existing input is selected for quick replacement.
+
+## Acceptance checks
+- Typing in Money in updates bucket cap instantly.
+- Input uses mobile numeric keyboard via `inputMode="decimal"`.
+- Visual priority is clear: large label first, large number area, and explicit helper lines.

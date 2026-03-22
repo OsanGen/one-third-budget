@@ -1,0 +1,31 @@
+# COMPONENT__HeaderStrip
+
+## Purpose
+Give first-time users immediate clarity at the top of the page without making the layout busy.
+
+## Inputs
+- Static title: `One Third Budget`
+- Static one-line purpose sentence
+- Static reassurance sentence
+
+## Outputs
+- A calm hero-like header strip within the `header` card.
+- Plain-language copy that explains the app goal and encourages action confidence.
+
+## State
+- Stateless.
+- No form state or side effects.
+
+## Dependencies
+- `components/HeaderStrip.tsx`
+- Global token styles in `app/globals.css`
+
+## Edge cases
+- Copy must avoid jargon.
+- One-line purpose must be short enough to scan quickly.
+- No em dashes in copy.
+
+## Acceptance checks
+- The header explains the product in one screenful under ten seconds.
+- First line hierarchy is clear: title, purpose, reassurance.
+- Clean spacing and no decorative background art or clutter.

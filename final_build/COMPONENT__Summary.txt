@@ -1,0 +1,92 @@
+# COMPONENT__Summary
+
+## Purpose
+Show at-a-glance monthly budget status so a first-time user can see if they are safe, close, or over limit in one glance.
+
+## Inputs
+- Revenue text parsed in page state.
+- Bucket list from local reducer (`bucketState.buckets`).
+- Derived values from pure helpers in `lib/money.ts`.
+
+## Outputs
+- Section title `Summary`.
+- Primary summary line with one of:
+  - `Still safe to spend` (under cap)
+  - `0 left` (exactly at cap)
+  - `Over the cap by` (over cap)
+- Live, polite announcements for key summary state changes through a hidden status region:
+  - no revenue
+  - at cap
+  - over cap
+  - under cap
+- Quiet support text on over-cap, like:
+  - `Fastest way back under: DoorDash, Fun Activities, Gaming`
+- Legend row list for each bucket with:
+  - small color dot
+  - bucket name
+  - dollar amount
+  - percent of cap
+- Primary number that matches the line:
+  - remaining amount, `$0.00`, or overage.
+- Status pill with one of `Safe`, `Close to cap`, `Over cap`.
+- Supporting visible lines for:
+  - total in buckets
+  - bucket cap
+  - used so far
+- Progress bar area showing fill and cap usage text.
+- Donut ring chart in a calm side area of the section to reinforce current usage.
+
+## State and derived logic
+- `bucketTotal = getBucketTotal(bucketState.buckets)`
+- `bucketCap = getCap(monthlyRevenue)`
+- `bucketStatus = getStatus(bucketCap, bucketTotal)`
+- `remaining = getRemaining(bucketCap, bucketTotal)`
+- `usagePercent = getUsagePercent(bucketCap, bucketTotal)`
+- `progressPercent = clamp(usagePercent, 0, 100)`
+- `overage = bucketTotal - bucketCap` when `bucketStatus` is `over`
+- `highlightedBucketId` selected from legend taps/clicks or row focus
+
+## Progress behavior
+- Fill is based on `usagePercent` and rendered as a calm rounded bar with INK outline.
+- Progress track itself is intentionally quiet and non-assertive to reduce repeated announcements; major numbers and status are communicated by text and status region.
+- Status text is always visible in the section with the pill so no user depends on color.
+- At 100% or more the bar is visually capped at full track.
+- Over-cap state is shown as a full bar plus explicit overage text: `$X.XX over` and `Usage is over by ...`.
+- Empty/zero revenue keeps bar visible at 0% with non-alarming helper copy.
+- Donut tone mapping:
+  - neutral/setup: blue
+  - safe: mint
+  - close: yellow
+  - over: pink
+- Donut center label:
+  - under cap: `$X.00 left`
+  - at cap: `$0.00 left`
+  - over cap: `$X.00 over`
+- No-bucket state:
+  - ring remains empty.
+  - supportive helper text appears: add a bucket and amount to make the ring meaningful.
+- Interaction:
+  - clicking/tapping a legend row sets `highlightedBucketId`
+  - keyboard focus on a legend row sets the same highlight
+  - matching bucket card receives `bucket-card-highlighted` style
+  - matching chart segment increases stroke emphasis
+- No separate color-only meaning; text labels and structure stay visible during highlight.
+- Scene accent is restrained to one tone per state, with panel/legend emphasis inheriting from that tone.
+
+## Edge cases
+- Revenue blank or zero:
+  - summary still renders and tells user to add monthly money in.
+- Exact-at-cap condition:
+  - shows `0 left` and matching copy.
+- Over-cap:
+  - shows overage and a calm adjustment suggestion.
+  - the suggestion uses up to three largest buckets from current totals.
+- Non-numeric or blank bucket amounts:
+  - all numbers come from `parseMoneyInput`-safe values via `getBucketTotal`.
+
+## Acceptance checks
+- The bar reads quickly on phone with low visual noise.
+- `used` copy and bar fill agree on the same numbers.
+- Quiet accents and heading separators support scanability without drawing attention from primary numbers.
+- Over-cap is clear and calm without alarm tone.
+- Empty states are understandable and actionable.
