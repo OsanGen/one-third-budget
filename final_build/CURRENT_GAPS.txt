@@ -19,6 +19,7 @@
 - Bucket section completion | done | Added empty guidance, first-five default card display, and show-all toggle in `app/page.tsx`.
 - Accessibility and mobile checks in behavior | in progress | Added visible labels for all inputs, focused keyboard targets, live status/notification announcements, and removed noisy aria-live from decorative progress track. Remaining: validate with real screen-reader device in a follow-up pass.
 - Ship handoff pass completed | done | Added `README.md` and `SHIP_CHECKLIST.md` with run steps, rules, limitations, and v2 backlog.
+- GitHub Pages deployment path | done | Added static export config, GitHub Actions Pages workflow, and repo docs for the shareable GitHub-hosted URL.
 - Over-cap trim guidance | done | `getTrimSuggestions` now returns top largest buckets for fast, specific over-cap adjustment, surfaced in Summary.
 - Responsive layout pass | done | Moved Next move near top, kept one-column mobile, set desktop side-by-side money-in and cap, and added stable spacing to avoid horizontal scroll.
 - Visual polish pass | done | Refined OSAN rhythm, section headers, state accents, coach target highlight motion, and bucket icon and button polish.

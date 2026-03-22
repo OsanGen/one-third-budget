@@ -5,6 +5,11 @@ One Third Budget v1 (Single Screen) system map
   - White-dominant field, INK text and outlines, FOG panel grouping
   - Temporary token values with explicit TODO for final CogSec logo hexes
 
+- Deployment layer (`next.config.mjs`, `.github/workflows/deploy-pages.yml`)
+  - Uses Next.js static export mode so the app can publish to GitHub Pages without a runtime server.
+  - Adds repo-aware `basePath` and asset prefix during GitHub Actions builds so the project site works under `/one-third-budget/`.
+  - Uploads the generated `out/` folder to GitHub Pages through the Actions deployment flow.
+
 - Presentational primitives (`components/ui/*`)
   - `Card`: reusable panel wrapper with shared style and section support
   - `SectionHeader`: heading + optional subtitle with heading scale

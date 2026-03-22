@@ -90,35 +90,17 @@ npm run dev
 - UI behavior lives in `app/page.tsx` with reusable primitives in `components/ui/`.
 - Design tokens and OSAN styling are in `app/globals.css`.
 
-## Make it a live shareable site
+## Live site on GitHub Pages
 
-Use GitHub + Vercel for the fastest sharing path:
+This repo is configured to publish automatically from `main` with GitHub Actions.
 
-1. Create a GitHub repository and connect it to your local folder.
-2. Push this project to GitHub.
-3. Import the repo in Vercel and deploy.
-4. Vercel gives you a URL you can share immediately.
+- Repo: `https://github.com/OsanGen/one-third-budget`
+- GitHub Pages URL: `https://osangen.github.io/one-third-budget/`
 
-### One-liner workflow (GitHub + Vercel)
+Deployment notes:
 
-```bash
-git init
-git add .
-git commit -m "Initial One Third Budget release"
-git branch -M main
-git remote add origin https://github.com/<your-user>/<your-repo>.git
-git push -u origin main
-```
+1. Push to `main`.
+2. GitHub Actions builds the static export into `out/`.
+3. GitHub Pages serves the exported files from the project path.
 
-Then:
-
-- Open Vercel
-- Click New Project
-- Import your GitHub repo
-- Accept defaults and deploy
-
-You will get a live URL like:
-
-- `https://your-app-name.vercel.app`
-
-If you want a fully GitHub-native static host, I can also set up a GitHub Pages export flow next.
+The Pages workflow is in [deploy-pages.yml](/Volumes/data/🕹️CodexDev/LifeStyle/Finance/.github/workflows/deploy-pages.yml).

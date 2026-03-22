@@ -1,0 +1,32 @@
+Component: Deployment
+
+Purpose
+- Publish One Third Budget as a GitHub-hosted static site with no backend runtime.
+
+Inputs
+- `main` branch pushes and manual workflow dispatches.
+- GitHub Actions environment variables, especially `GITHUB_ACTIONS` and `GITHUB_REPOSITORY`.
+
+Outputs
+- Static export in `out/`.
+- GitHub Pages deployment for the repository project site.
+
+State
+- No application runtime state.
+- Build-time config derives the repo path from `GITHUB_REPOSITORY` only during GitHub Actions builds.
+
+Dependencies
+- `next.config.mjs`
+- `.github/workflows/deploy-pages.yml`
+- GitHub Pages enabled for workflow-based builds
+
+Edge cases
+- Local `npm run build` should still work without a repo subpath.
+- GitHub Pages needs `.nojekyll` so `_next` assets are served correctly.
+- If the repository name changes, the Pages path changes automatically on the next Actions build.
+
+Acceptance checks
+- `npm run build` succeeds locally.
+- `GITHUB_ACTIONS=true GITHUB_REPOSITORY=OsanGen/one-third-budget npm run build` succeeds and emits `out/`.
+- Push to `main` triggers the Pages workflow.
+- The published app loads from `https://osangen.github.io/one-third-budget/`.
